@@ -171,7 +171,7 @@ const UserProfilePage = () => {
             <button
               className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 hover:bg-red-700/20 rounded-lg"
               onClick={() => {
-                window.location.href = 'https://NoonMinutes.vercel.app/login';
+                window.location.href = 'https://noonminutes.vercel.app/login';
               }}
               title="Logout"
             >
