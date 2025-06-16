@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
-import { User, Bell, ChevronRight, LogOut, ShoppingCart } from 'lucide-react';
+import {
+  User,
+  Bell,
+  ChevronRight,
+  LogOut,
+  ShoppingCart,
+  Settings,
+} from 'lucide-react';
 
 interface SidebarProps {
   onLogout?: () => void;
 }
 
 const Sidebar = ({ onLogout }: SidebarProps) => {
-  const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [showOrdersDropdown, setShowOrdersDropdown] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [fontSize, setFontSize] = useState<'sm' | 'base' | 'lg'>('base');
 
-  const isAnyDropdownOpen = showUserDropdown || showNotificationDropdown || showOrdersDropdown;
+  const isAnyDropdownOpen = showNotificationDropdown || showOrdersDropdown;
 
   const handleLogout = () => {
-    setShowUserDropdown(false);
-    if (onLogout) {
-      onLogout();
-    }
+    if (onLogout) onLogout();
   };
 
   const previousOrders = [
@@ -102,27 +106,25 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
         <div
           className="fixed inset-0 bg-black bg-opacity-30 z-40"
           onClick={() => {
-            setShowUserDropdown(false);
-            setShowUserProfile(false);
             setShowNotificationDropdown(false);
             setShowOrdersDropdown(false);
           }}
         />
       )}
 
-      <div className="w-16 bg-gradient-to-b from-red-600 to-blue-800 rounded-lg m-2 flex flex-col items-center py-6 relative z-50">
+      <div className={`w-16 bg-gradient-to-b from-red-600 to-blue-800 rounded-lg m-2 flex flex-col items-center py-6 relative z-50 text-${fontSize}`}>
         <div className="w-10 h-10 bg-red-800 rounded-full flex items-center justify-center mb-6">
           <span className="text-white font-bold text-sm">AE</span>
         </div>
 
-        {/* Notification Icon */}
         <div className="mb-6">
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
             onClick={() => {
               setShowNotificationDropdown(!showNotificationDropdown);
-              setShowUserDropdown(false);
               setShowOrdersDropdown(false);
+              setShowUserProfile(false);
+              setShowSettingsModal(false);
             }}
           >
             <Bell className="w-5 h-5 text-gray-300" />
@@ -131,14 +133,14 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
           </button>
         </div>
 
-        {/* Orders Icon */}
         <div className="mb-6">
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
             onClick={() => {
               setShowOrdersDropdown(!showOrdersDropdown);
-              setShowUserDropdown(false);
               setShowNotificationDropdown(false);
+              setShowUserProfile(false);
+              setShowSettingsModal(false);
             }}
           >
             <ShoppingCart className="w-5 h-5 text-gray-300" />
@@ -148,15 +150,30 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
 
         <div className="flex-1" />
 
-        {/* User + Logout */}
+        <div className="mb-4">
+          <button
+            className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
+            onClick={() => {
+              setShowSettingsModal(true);
+              setShowNotificationDropdown(false);
+              setShowOrdersDropdown(false);
+              setShowUserProfile(false);
+            }}
+            title="Settings"
+          >
+            <Settings className="w-5 h-5 text-gray-300" />
+            <ChevronRight className="w-3 h-3 text-gray-300 absolute right-0" />
+          </button>
+        </div>
+
         <div className="flex flex-col space-y-4">
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
             onClick={() => {
-              setShowUserDropdown(!showUserDropdown);
-              setShowUserProfile(false);
+              setShowUserProfile(true);
               setShowNotificationDropdown(false);
               setShowOrdersDropdown(false);
+              setShowSettingsModal(false);
             }}
           >
             <User className="w-5 h-5 text-gray-300" />
@@ -172,28 +189,6 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
           </button>
         </div>
 
-        {/* User Dropdown */}
-        {showUserDropdown && (
-          <div className="absolute bottom-32 left-16 ml-2 w-44 bg-white rounded-lg shadow-lg border z-50">
-            <div className="py-2">
-              <button
-                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                onClick={() => setShowUserProfile(!showUserProfile)}
-              >
-                Profile
-              </button>
-              <hr className="my-1" />
-            </div>
-            {showUserProfile && (
-              <div className="px-4 py-2 border-t text-sm text-gray-700">
-                <p><strong>Name:</strong> Demo User</p>
-                <p><strong>ID:</strong> #USR001</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Notification Dropdown */}
         {showNotificationDropdown && (
           <div className="absolute top-20 left-16 ml-2 w-64 bg-white rounded-lg shadow-lg border z-50">
             <div className="py-2">
@@ -218,7 +213,6 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
           </div>
         )}
 
-        {/* Orders Table Modal */}
         {showOrdersDropdown && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center"
@@ -228,7 +222,9 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
               className="w-[90%] max-w-[1000px] bg-white rounded-xl shadow-2xl border p-6 overflow-auto max-h-[80vh]"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Previous Orders</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                Previous Orders
+              </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">
                   <thead>
@@ -256,6 +252,72 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showUserProfile && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+            onClick={() => setShowUserProfile(false)}
+          >
+            <div
+              className="bg-white rounded-xl shadow-xl border p-6 w-[90%] max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+                User Profile
+              </h3>
+              <div className="space-y-2 text-sm text-gray-700 text-center">
+                <p><strong>Name:</strong> Demo User</p>
+                <p><strong>ID:</strong> #USR001</p>
+              </div>
+              <div className="mt-6 text-right">
+                <button
+                  className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  onClick={() => setShowUserProfile(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showSettingsModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+            onClick={() => setShowSettingsModal(false)}
+          >
+            <div
+              className="bg-white rounded-xl shadow-xl border p-6 w-[90%] max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+                Settings
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-700">Font Size</span>
+                  <select
+                    value={fontSize}
+                    onChange={(e) => setFontSize(e.target.value as 'sm' | 'base' | 'lg')}
+                    className="border border-gray-300 rounded px-2 py-1 text-sm"
+                  >
+                    <option value="sm">Small</option>
+                    <option value="base">Medium</option>
+                    <option value="lg">Large</option>
+                  </select>
+                </div>
+              </div>
+              <div className="mt-6 text-right">
+                <button
+                  className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  onClick={() => setShowSettingsModal(false)}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
