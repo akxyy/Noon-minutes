@@ -6,6 +6,7 @@ import {
   LogOut,
   ShoppingCart,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   onLogout?: () => void;
@@ -14,7 +15,7 @@ interface SidebarProps {
 const Sidebar = ({ onLogout }: SidebarProps) => {
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [showOrdersDropdown, setShowOrdersDropdown] = useState(false);
-  const [showUserProfile, setShowUserProfile] = useState(false);
+  const navigate = useNavigate();
 
   const isAnyDropdownOpen = showNotificationDropdown || showOrdersDropdown;
 
@@ -120,7 +121,6 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
             onClick={() => {
               setShowNotificationDropdown(!showNotificationDropdown);
               setShowOrdersDropdown(false);
-              setShowUserProfile(false);
             }}
           >
             <Bell className="w-5 h-5 text-gray-300" />
@@ -135,7 +135,6 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
             onClick={() => {
               setShowOrdersDropdown(!showOrdersDropdown);
               setShowNotificationDropdown(false);
-              setShowUserProfile(false);
             }}
           >
             <ShoppingCart className="w-5 h-5 text-gray-300" />
@@ -149,7 +148,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
             onClick={() => {
-              setShowUserProfile(true);
+              navigate('/profile');
               setShowNotificationDropdown(false);
               setShowOrdersDropdown(false);
             }}
@@ -230,34 +229,6 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showUserProfile && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
-            onClick={() => setShowUserProfile(false)}
-          >
-            <div
-              className="bg-white rounded-xl shadow-xl border p-6 w-[90%] max-w-md"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-                User Profile
-              </h3>
-              <div className="space-y-2 text-sm text-gray-700 text-center">
-                <p><strong>Name:</strong> Demo User</p>
-                <p><strong>ID:</strong> #USR001</p>
-              </div>
-              <div className="mt-6 text-right">
-                <button
-                  className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                  onClick={() => setShowUserProfile(false)}
-                >
-                  Close
-                </button>
               </div>
             </div>
           </div>
