@@ -166,7 +166,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
             onClick={() => {
-              navigate('/profile');
+              navigate('/profiles');
               setShowNotificationDropdown(false);
               setShowOrdersDropdown(false);
             }}
@@ -178,10 +178,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
 
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 hover:bg-red-700/20 rounded-lg"
-            onClick={() => {
-              if (onLogout) onLogout();
-              navigate('/');
-            }}
+            onClick={() => window.location.href = '/login' }
             title="Logout"
           >
             <LogOut className="w-5 h-5 text-gray-300" />

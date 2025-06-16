@@ -4,10 +4,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import ProfilesPage from "./components/ProfilesPage";
 import SignInPage from "./components/SignInPage";
 import NotFound from "./pages/NotFound";
-import UserProfilePage from "./pages/UserProfilePage";
 import Dashboard from "./components/Dashboard";
 
 const queryClient = new QueryClient();
@@ -38,6 +37,7 @@ const App = () => {
                 )
               }
             />
+            <Route path="/profiles" element={<ProfilesPage />} />
 
             {/* Protected dashboard route */}
             <Route
@@ -47,18 +47,6 @@ const App = () => {
                   <Dashboard onLogout={() => setIsSignedIn(false)} />
                 ) : (
                   <Navigate to="/login" />
-                )
-              }
-            />
-
-            {/* Protected profile route */}
-            <Route
-              path="/profile"
-              element={
-                isSignedIn ? (
-                  <UserProfilePage/>
-                ) : (
-                  <Navigate to="/" />
                 )
               }
             />
