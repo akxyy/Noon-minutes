@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +13,12 @@ const SignInPage = ({ onSignIn }: SignInPageProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSignIn();
+
+    if (email === 'noonminutes@gmail.com' && password === '12345') {
+      onSignIn();
+      return;
+    }
+    alert("This account is restricted. Please use different credentials.");
   };
 
   return (
@@ -26,7 +30,9 @@ const SignInPage = ({ onSignIn }: SignInPageProps) => {
             <div className="text-center text-black max-w-md">
               <h1 className="text-4xl font-bold mb-6">Noon Minutes</h1>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                Ready to optimize your business logistics? explore our smart solutions in Saudi Arabia.serving a diverse clientele,including thousands of restaurant chanins,retaiers, and e-commerce platforms.with a track record of nearly 20million annual deliveries nationwide.
+                Ready to optimize your business logistics? Explore our smart solutions in Saudi Arabia.
+                Serving a diverse clientele, including thousands of restaurant chains, retailers, and
+                e-commerce platforms. With a track record of nearly 20 million annual deliveries nationwide.
               </p>
             </div>
           </div>

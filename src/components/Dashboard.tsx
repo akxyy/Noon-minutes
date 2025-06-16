@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import OrderPanel from './OrderPanel';
-// import MapView from './MapView';
+import MapView from './MapView';
 import NewOrderModal from './NewOrderModal';
 import CustomToast from './CustomToast';
 import OrderDetailsView from './OrderDetailsView';
 
 export interface Order {
-  id: string;
-  name: string;
-  phone: string;
-  clientOrderId: string;
-  orderValue: string;
-  paymentMethod: 'Cash' | 'Span Machine' | 'Paid';
+  id: any;
+  name: any;
+  phone: any;
+  clientOrderId: any;
+  orderValue: any;
+  paymentMethod: 'Cash' | 'Span Machine' | 'Paid'|'Card';
   customerAddress?: string;
   status: 'Pending' | 'Auto Dispatch Failed' | 'Accepted' | 'Driver at Pickup' | 'Picked' | 'Driver at Dropoff' | 'Completed';
   timestamp: Date;
+  Location:string
 }
 
 interface DashboardProps {
@@ -66,7 +67,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
         />
         
         <div className="flex-1 relative">
-          {/* <MapView /> */}
+          <MapView />
           
           <NewOrderModal
             isOpen={isNewOrderModalOpen}

@@ -36,6 +36,54 @@ const OrderPanel = ({ orders, onNewOrder, onOrderClick, onRemoveOrder }: OrderPa
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
 
+  const hardcodedOrders: Order[] = [
+    {
+      id: 'order-1001',
+      name: 'Ali Hassan',
+      phone: '0501234567',
+      clientOrderId: 'CL-001',
+      orderValue: 'SAR 150',
+      paymentMethod: 'Cash',
+      status: 'Auto Dispatch Failed'
+    },
+    {
+      id: 'order-1002',
+      name: 'Sara Ahmed',
+      phone: '0509876543',
+      clientOrderId: 'CL-002',
+      orderValue: 'SAR 75',
+      paymentMethod: 'Card',
+      status: 'Accepted'
+    },
+    {
+      id: 'order-1003',
+      name: 'Mohammed Saleh',
+      phone: '0502223344',
+      clientOrderId: 'CL-003',
+      orderValue: 'SAR 200',
+      paymentMethod: 'Cash',
+      status: 'Driver at Pickup'
+    },
+    {
+      id: 'order-1004',
+      name: 'Noura AlQahtani',
+      phone: '0508889991',
+      clientOrderId: 'CL-004',
+      orderValue: 'SAR 300',
+      paymentMethod: 'Card',
+      status: 'Picked'
+    },
+    {
+      id: 'order-1005',
+      name: 'Faisal Alotaibi',
+      phone: '0501112223',
+      clientOrderId: 'CL-005',
+      orderValue: 'SAR 500',
+      paymentMethod: 'Cash',
+      status: 'Completed'
+    }
+  ];
+
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -43,37 +91,17 @@ const OrderPanel = ({ orders, onNewOrder, onOrderClick, onRemoveOrder }: OrderPa
     }));
   };
 
-  const previousOrders = [
-    {
-      id: 'PREV001',
-      name: 'Ahmed Al Saeed',
-      phone: '+966 55 123 4567',
-      location: 'Riyadh, Saudi Arabia',
-      clientOrderId: 'CL-7890',
-      paymentMethod: 'Cash',
-      orderValue: 'SAR 120.00',
-    },
-    {
-      id: 'PREV002',
-      name: 'Fatimah Al Zahrani',
-      phone: '+966 55 987 6543',
-      location: 'Jeddah, Saudi Arabia',
-      clientOrderId: 'CL-3456',
-      paymentMethod: 'Card',
-      orderValue: 'SAR 85.00',
-    }
-  ];
-
   const isDriverAccepted = (order: Order): boolean => {
-    return order.status === 'Accepted'
+    return order.status === 'Accepted';
   };
 
   const getOrdersByStatus = (status?: string) => {
-    if (!status || status === 'All') return orders;
+    const combinedOrders = [...orders, ...hardcodedOrders];
+    if (!status || status === 'All') return combinedOrders;
     if (status === 'Accepted') {
-      return orders.filter(order => isDriverAccepted(order));
+      return combinedOrders.filter(order => isDriverAccepted(order));
     }
-    return orders.filter(order => order.status === status);
+    return combinedOrders.filter(order => order.status === status);
   };
 
   const handleCancelOrder = (orderId: string) => {
@@ -99,7 +127,7 @@ const OrderPanel = ({ orders, onNewOrder, onOrderClick, onRemoveOrder }: OrderPa
   };
 
   const statusSections = [
-    { name: 'All', count: orders.length, color: 'bg-gray-500' },
+    { name: 'All', count: getOrdersByStatus().length, color: 'bg-gray-500' },
     { name: 'Pending', count: getOrdersByStatus('Pending').length, color: 'bg-yellow-500' },
     { name: 'Auto Dispatch Failed', count: getOrdersByStatus('Auto Dispatch Failed').length, color: 'bg-red-500' },
     { name: 'Accepted', count: getOrdersByStatus('Accepted').length, color: 'bg-blue-500' },
@@ -133,7 +161,7 @@ const OrderPanel = ({ orders, onNewOrder, onOrderClick, onRemoveOrder }: OrderPa
           />
         </div>
         <div className="mt-4">
-          <h4 className="font-medium text-gray-900">On Demand ({orders.length})</h4>
+          <h4 className="font-medium text-gray-900">On Demand ({getOrdersByStatus().length})</h4>
         </div>
       </div>
 
@@ -172,7 +200,10 @@ const OrderPanel = ({ orders, onNewOrder, onOrderClick, onRemoveOrder }: OrderPa
                               <User className="w-4 h-4 text-gray-600" />
                             </div>
                             <div className="flex-1" onClick={() => onOrderClick(order)}>
-                              <p className="text-sm font-medium text-orange-500 mb-1">{order.name}</p>
+                              <p className="text-sm font-medium text-black-500 mb-1">Name:{order.name}</p>
+                              <p className="text-sm font-medium text-black-500 mb-1">Phone:{order.phone}</p>
+                              <p className="text-sm font-medium text-black-500 mb-1">Location:Riyadh</p>
+                              <p className="text-sm font-medium text-black-500 mb-1">Order Id:{order.clientOrderId}</p>
                               <p className="text-xs text-gray-600 mb-1">Noon Minutes</p>
                               <span className="inline-block px-2 py-1 rounded text-xs font-medium bg-red-500 text-white">
                                 Pending Driver Acceptance
@@ -268,43 +299,8 @@ const OrderPanel = ({ orders, onNewOrder, onOrderClick, onRemoveOrder }: OrderPa
             )}
           </div>
         ))}
-
-        {/* Previous Orders */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 relative mt-2">
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gray-400 rounded-l-lg"></div>
-          <button
-            onClick={() => toggleSection('Previous')}
-            className="w-full p-3 text-left flex items-center justify-between hover:bg-gray-50 transition-colors rounded-lg pl-4"
-          >
-            <span className="font-medium text-gray-900">
-              Previous Orders ({previousOrders.length})
-            </span>
-            <ChevronDown
-              className={`w-4 h-4 transform transition-transform ${expandedSections['Previous'] ? 'rotate-180' : 'rotate-0'}`}
-            />
-          </button>
-
-          {expandedSections['Previous'] && (
-            <div className="px-4 pb-3 space-y-2 pl-5">
-              {previousOrders.map((prev) => (
-                <div
-                  key={prev.id}
-                  className="bg-gray-50 p-3 rounded-md shadow-sm text-sm text-gray-700"
-                >
-                  <p className="font-medium text-orange-600">{prev.name}</p>
-                  <p className="text-xs">Phone: {prev.phone}</p>
-                  <p className="text-xs">Location: {prev.location}</p>
-                  <p className="text-xs">Client Order ID: {prev.clientOrderId}</p>
-                  <p className="text-xs">Payment: {prev.paymentMethod}</p>
-                  <p className="text-xs">Total: {prev.orderValue}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
 
-      {/* Alert Dialog */}
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
