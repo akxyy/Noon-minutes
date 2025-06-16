@@ -19,8 +19,9 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
   const navigate = useNavigate();
 
   const isAnyDropdownOpen = showNotificationDropdown || showOrdersDropdown;
-
+  
   const handleLogout = () => {
+    console.log("function is rumnig")
     if (onLogout) onLogout();
     navigate("/");
   };
