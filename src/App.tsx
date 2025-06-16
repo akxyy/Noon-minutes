@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import SignInPage from "./components/SignInPage";
 import NotFound from "./pages/NotFound";
 import UserProfilePage from "./pages/UserProfilePage";
@@ -19,27 +20,46 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+
         <BrowserRouter>
           <Routes>
-            {/* Login Route */}
+            {/* Default route redirects to /login */}
+            <Route path="/" element={<Navigate to="/login" />} />
+
+            {/* Login route */}
             <Route
-              path="/"
+              path="/login"
               element={
-                isSignedIn ? <Navigate to="/dashboard" /> : <SignInPage onSignIn={() => setIsSignedIn(true)} />
+                isSignedIn ? (
+                  <Navigate to="/login" />
+                ) : (
+                  <SignInPage onSignIn={() => setIsSignedIn(true)} />
+                  // <Navigate to="/login" />
+                )
               }
             />
 
-            {/* Protected Routes */}
+            {/* Protected dashboard route */}
             <Route
               path="/dashboard"
               element={
-                isSignedIn ? <Dashboard onLogout={() => setIsSignedIn(false)} /> : <Navigate to="/" />
+                isSignedIn ? (
+                  <Dashboard onLogout={() => setIsSignedIn(false)} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
+
+            {/* Protected profile route */}
             <Route
               path="/profile"
               element={
-                isSignedIn ? <UserProfilePage /> : <Navigate to="/" />
+                isSignedIn ? (
+                  <UserProfilePage/>
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
 

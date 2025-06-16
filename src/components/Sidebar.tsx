@@ -19,12 +19,12 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
   const navigate = useNavigate();
 
   const isAnyDropdownOpen = showNotificationDropdown || showOrdersDropdown;
-  
-  const handleLogout = () => {
-    console.log("function is rumnig")
-    if (onLogout) onLogout();
-    navigate("/");
-  };
+
+  // const handleLogout = () => {
+  //   console.log("function is rumnig")
+  //   if (onLogout) onLogout();
+  //   navigate("/login");
+  // };
 
   const previousOrders = [
     {
@@ -178,11 +178,15 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
 
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 hover:bg-red-700/20 rounded-lg"
-            onClick={handleLogout}
+            onClick={() => {
+              if (onLogout) onLogout();
+              navigate('/');
+            }}
             title="Logout"
           >
             <LogOut className="w-5 h-5 text-gray-300" />
           </button>
+
         </div>
 
         {showNotificationDropdown && (
