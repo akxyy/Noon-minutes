@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 👈 Import useNavigate
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,14 +11,17 @@ interface SignInPageProps {
 const SignInPage = ({ onSignIn }: SignInPageProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // 👈 Initialize navigate
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (email === 'noonminutes@gmail.com' && password === '12345') {
       onSignIn();
+      navigate('/dashboard'); // 👈 Redirect to Dashboard
       return;
     }
+
     alert("This account is restricted. Please use different credentials.");
   };
 

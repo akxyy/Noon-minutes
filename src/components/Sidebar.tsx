@@ -21,6 +21,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
 
   const handleLogout = () => {
     if (onLogout) onLogout();
+    navigate(-1);   // ✅ Redirect user after logout
   };
 
   const previousOrders = [
@@ -192,7 +193,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
 
         {showOrdersDropdown && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-100 flex items-center justify-center"
             onClick={() => setShowOrdersDropdown(false)}
           >
             <div
