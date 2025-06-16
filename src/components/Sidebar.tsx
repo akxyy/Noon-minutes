@@ -5,6 +5,7 @@ import {
   ChevronRight,
   LogOut,
   ShoppingCart,
+  Home,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +22,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
 
   const handleLogout = () => {
     if (onLogout) onLogout();
-    navigate(-1);   // ✅ Redirect user after logout
+    navigate("/");
   };
 
   const previousOrders = [
@@ -116,6 +117,21 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
           <span className="text-white font-bold text-sm">AE</span>
         </div>
 
+        {/* Home Button */}
+        <div className="mb-6">
+          <button
+            className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110"
+            onClick={() => {
+              navigate('/dashboard');
+              setShowNotificationDropdown(false);
+              setShowOrdersDropdown(false);
+            }}
+            title="Dashboard"
+          >
+            <Home className="w-5 h-5 text-white" />
+          </button>
+        </div>
+
         <div className="mb-6">
           <button
             className="w-10 h-10 flex items-center justify-center transition-colors hover:scale-110 relative"
@@ -153,6 +169,7 @@ const Sidebar = ({ onLogout }: SidebarProps) => {
               setShowNotificationDropdown(false);
               setShowOrdersDropdown(false);
             }}
+            title="Profile"
           >
             <User className="w-5 h-5 text-gray-300" />
             <ChevronRight className="w-3 h-3 text-gray-300 absolute right-0" />
